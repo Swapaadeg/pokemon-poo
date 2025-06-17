@@ -6,27 +6,30 @@ class Pokemon {
     private $pa;
     private $type;
     private $pv;
+    private $pvRestant;
 
     //Construct
     function __construct(
         $nom,
         $pa,
         $type,
-        $pv
+        $pv,
+        $pvRestant
     ) {
         $this->setNom($nom);
         $this->setPa($pa);
         $this->setType($type);
         $this->setPv($pv);
+        $this->setPvrestant($pvRestant);
     }
 
     //GETTER & SETTER
     //NOM
     public function getNom(){
-        return $this->name;
+        return $this->nom;
     }
 
-    public function setNom() {
+    public function setNom($nom) {
         $this->nom = $nom;
     }
 
@@ -35,7 +38,7 @@ class Pokemon {
         return $this->pa;
     }
 
-    public function setPa() {
+    public function setPa($pa) {
         $this->pa = $pa;
     }
 
@@ -44,7 +47,7 @@ class Pokemon {
         return $this->type;
     }
 
-    public function setType() {
+    public function setType($type) {
         $this->type = $type;
     }
 
@@ -54,29 +57,44 @@ class Pokemon {
         return $this->pv;
     }
 
-    public function setPv() {
+    public function setPv($pv) {
         $this->pv = $pv;
+    }
+
+
+    //PV RESTANT
+    public function getPvRestant(){
+        return $this->pvRestant;
+    }
+
+    public function setPvRestant($pvRestant) {
+        $this->pvRestant = $pvRestant;
+    }
+    //FONCTION POKEDEX
+    public function pokedex(){
+        //ON DEFINI UNE VARIABLE A 10% des PV
+        $alertPv = $this->getPv() * 0.2;
+
+        echo $this->getNom() . '<br>
+        Puissance d\'attaque : ' . $this->getPa() . '<br>
+        Points de vie  : ' . $this->getPVRestant() . '/' . $this->getPv() . '<br>';
+        //SOUS LES 10% ON MET LE SIGNAL ROUGE
+        if ($this->getPvRestant() <= $alertPv) {
+            echo 'Votre niveau de point de vie est faible : 🔴 ';
+        } else {
+            echo 'Votre niveau de point de vie est satisfaisant : 🟢';
+        }
+    }
+    //ATTAQUER
+    public function attaquer($adversaire, $i) {
+        $this->getPa();
+        echo $this->getNom() . 'fait ' . $this->getPa . ' de dégâts sur ' . $this->getNom($adversaire);
+        $adversaire->dgtRecu($this,$i);
+    }
+
+    public function dgtRecu($adversaire,$i) {
+        $pvRestant = $this->getPv;
+        $pvRestant = $pvRestant-($adversaire->dgtRecu()*$i);
     }
 }
 
-//FONCTION POKEDEX
-    public function pokedex()
-    {
-        //ON DEFINI UNE VARIABLE A 10% DU RESERVOIR
-        $alertEssence = $this->getReservoir() * 0.1;
-
-        echo        $this->getCompteur() . 'km<br>
-        Phare : ' . $this->getPhare() . '<br>
-        Ess  : ' . $this->getEssence() . '/' . $this->getReservoir() . '<br>';
-        //SOUS LES 10% ON MET LE SIGNAL ROUGE
-        if ($this->getEssence() <= $alertEssence) {
-            echo 'Signal Essence : rouge ';
-        } else {
-            echo 'Signal Essence : Vert';
-        }
-    }
-
-    public function faireLePlein()
-    {
-        $this->setEssence($this->getReservoir());
-    }
